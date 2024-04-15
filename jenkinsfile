@@ -1,29 +1,21 @@
 pipeline {
     agent any
-    environment {
-        DOCKER_IMAGE = 'crypto:latest'
-        DOCKER_USERNAME = 'mickael26t'
-        DOCKER_PASSWORD = 'Tabo/050925'
-    }
+
     stages {
-        stage('Build') {
+        stage('Build Docker Image') {
             steps {
                 script {
-                    docker.build("$DOCKER_IMAGE")
+                    docker.build("projet_devops:latest")
                 }
             }
         }
-        stage('Test') {
-            steps {
-                echo 'Running tests...'
-                // Ici tu peux ajouter des commandes pour exécuter des tests
-            }
-        }
-        stage('Push to Docker Hub') {
+        stage('Build and push Docker Image') {
             steps {
                 script {
-                    docker.withRegistry('https://registry.hub.docker.com', 'DockerHubID') {
-                        docker.image("$DOCKER_IMAGE").push()
+                    withDockerRegistry(credentialsId: 'DockerHubID', toolName:'docker') {
+                        sh "docker build -t crypto ."
+                        sh "docker tag crypto mickael26t/crypto:latest"
+                        sh "docker push mickael26t/crypto:latest"
                     }
                 }
             }
