@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        DOCKER_IMAGE = 'monsite:latest'
+        DOCKER_IMAGE = 'crypto:latest'
         DOCKER_USERNAME = 'mickalow26t@gmail.com'
         DOCKER_PASSWORD = 'Tabo/050925'
     }
