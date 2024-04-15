@@ -9,7 +9,15 @@ pipeline {
                 }
             }
         }
-        stage('Build and push Docker Image') {
+        stage('Run Tests') {
+            steps {
+                // Ajoutez ici les étapes pour exécuter vos tests
+                // Par exemple, vous pouvez exécuter des tests unitaires ou d'intégration
+                sh 'echo "Running tests..."'
+                // Si vous avez des tests à exécuter, remplacez la commande echo ci-dessus par la commande réelle
+            }
+        }
+        stage('Build and Push Docker Image') {
             steps {
                 script {
                     withDockerRegistry(credentialsId: 'DockerHubID', toolName:'docker') {
@@ -18,6 +26,14 @@ pipeline {
                         sh "docker push mickael26t/crypto:latest"
                     }
                 }
+            }
+        }
+        stage('Deploy') {
+            steps {
+                // Ajoutez ici les étapes pour le déploiement de votre application
+                // Cela peut inclure le déploiement sur un serveur ou une plate-forme de cloud
+                sh 'echo "Deploying..."'
+                // Ajoutez les commandes de déploiement réelles ici
             }
         }
     }
