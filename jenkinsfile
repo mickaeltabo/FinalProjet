@@ -1,0 +1,32 @@
+pipeline {
+    agent any
+    environment {
+        DOCKER_IMAGE = 'monsite:latest'
+        DOCKER_USERNAME = 'mickael26t'
+        DOCKER_PASSWORD = 'Tabo/050925'
+    }
+    stages {
+        stage('Build') {
+            steps {
+                script {
+                    docker.build("$DOCKER_IMAGE")
+                }
+            }
+        }
+        stage('Test') {
+            steps {
+                echo 'Running tests...'
+                // Ici tu peux ajouter des commandes pour exécuter des tests
+            }
+        }
+        stage('Push to Docker Hub') {
+            steps {
+                script {
+                    docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
+                        docker.image("$DOCKER_IMAGE").push()
+                    }
+                }
+            }
+        }
+    }
+}
